@@ -1,69 +1,45 @@
-import json
+#%%
+avengers  = ['Iron Man', 'Captain America', 'Black Widow', 'Hulk', 'Thor', 'Hawkeye']
+avengers.pop(1)
+avengers.insert(0, 'Captain America')
+#print(avengers)
 
-with open("/Users/pradeepmishra/Downloads/Assignment_JSON_Generators_Decorators/sales_data.json", "r") as f:
-    data = json.load(f)
+scores = [92, 85, 76, 58, 89, 91, 73, 84]
+aCount = bCount = cCount = dCount = eCount = 0
+for i in scores:
+    if i > 90 and i <= 100:
+        aCount += 1
+    elif i > 80 and i <= 89:
+        bCount += 1
+    elif i > 70 and i <= 79:
+        cCount += 1
+    elif i > 60 and i <= 69:
+        dCount += 1
+    else:
+        eCount += 1
 
-    #task 2
-    categorized_data = {}
-    for d in data:
-        if d['category'] not in categorized_data:
-            categorized_data[d['category']] = d['price_per_unit'] * d['quantity']
-        else:
-            categorized_data[d['category']] += d['price_per_unit'] * d['quantity']
+# print(f"""
+# Grade Summary:
+# - A: {aCount} students
+# - B: {bCount} students
+# - C: {cCount} students
+# - D: {dCount} students
+# - F: {eCount} students
+# """)
 
+# Lists to store product names and stock levels
+product_names = ["Apples", "Bananas", "Oranges", "Pears", "Grapes"]
+stock_levels = [20, 50, 15, 5, 8]
 
-
-    # sales_result = [{"category": key, "total_sales": value } for key, value in categorized_data.items()]
-    # print(json.dumps(sales_result))
-    # # task 3
-    # json_str = json.dumps(sales_result, indent=4)
-    #
-    # with open("aggregated_sales.json", "w") as f:
-    #     f.write(json_str)
-    #
-    # task 4
-    # def read_and_filter_temperatures(file_name, threshold):
-    #     with open(f"/Users/pradeepmishra/Downloads/Assignment_JSON_Generators_Decorators/{file_name}", "r") as file:
-    #         for line in file.readlines():
-    #             sensor_name,temp = line.strip().split(',')
-    #             if float(temp) > threshold:
-    #                 yield temp
-    #
-    # sensor_data = read_and_filter_temperatures("sensor_data.txt", 20)
-    # for sensor in sensor_data:
-    #     print(sensor)
-
-    # task 5
-    def cache_decorator(func):
-        ticker_cache = {}
-        def wrapper(*args, **kwargs):
-            if args in ticker_cache:
-                print("Getting company from cache...")
-            else:
-                ticker_cache[args] = func(*args, **kwargs)
-            return ticker_cache[args]
-        return wrapper
+minimum_stock = 10  # Minimum stock before reordering
+items_to_order = []
+for i in range(len(product_names)):
+        if stock_levels[i] < minimum_stock:
+            items_to_order.append(product_names[i])
+#helloMsg = "hello" if 1 < 2 else "bye"
+print("Items to Reorder:")
+for i in items_to_order:
+    print(f"- {i}")
 
 
-    @cache_decorator
-    def get_company_name(ticker):
-        """Simulated API function to fetch a company name based on the ticker symbol."""
-        # Simulate different responses based on the ticker symbol
-        print("Getting api name from api...")
-        api_responses = {
-            "AAPL": "Apple Inc.",
-            "MSFT": "Microsoft Corporation",
-            "GOOGL": "Alphabet Inc."
-        }
-        return api_responses.get(ticker, "Unknown Company")
-
-    print(get_company_name("AAPL"))  # Expected to trigger an API call
-    print(get_company_name("AAPL"))
-    print(get_company_name("AAPL"))
-    print(get_company_name("MSFT"))  # Expected to trigger an API call
-    print(get_company_name("MSFT"))  # Expected to use cached data
-    print(get_company_name("GOOGL"))  # Expected to trigger an API call
-    print(get_company_name("GOOGL"))
-
-
-
+#%%
